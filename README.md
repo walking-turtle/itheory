@@ -34,3 +34,27 @@
 
 *Note that* it might be easier to use `virtualenvwrapper` if you are already
 used to it.
+
+# Python app
+
+* Run python app
+
+```sh
+λ cd /path/to/itheory
+λ ./src/main.py
+```
+
+# Docker image
+
+* Build docker image
+
+```sh
+λ cd /path/to/itheory
+λ docker build -t itheory .
+```
+
+* Run docker image
+
+```sh
+λ docker run --rm itheory
+```
