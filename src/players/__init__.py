@@ -9,6 +9,7 @@ def randomfirst(f):
             return f(s,bl)
         else:
             return moves[randrange(0,len(moves))]
+    return g
 
 class RPSPlayer():
     def __init__(self,name):
