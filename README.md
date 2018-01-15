@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/w2ak/itheory.svg?branch=master)](https://travis-ci.org/w2ak/itheory)
+
 # Information theory project
 
 # Workplace setup
