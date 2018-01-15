@@ -14,6 +14,12 @@ _names = {
         S: "Scissors",
         }
 
+_keys = {
+        R: "R",
+        P: "P",
+        S: "S",
+        }
+
 _beats = {
         R: S,
         P: R,
