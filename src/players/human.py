@@ -12,13 +12,15 @@ _moves = ','.join(_moves)
 
 class Player(players.RPSPlayer):
     def play(self,backlog):
-        print("Whats your move? {:}".format(_moves))
+        print("What's your move, {:}? {:}".format(self.name,_moves))
+        rps.say("Given backlog: {:}".format([rps._names[k] for k in backlog]))
         while 1:
             try:
                 choice = input("> ")
             except EOFError:
+                print("")
                 return None
             if choice:
-                c = choice[0]
+                c = choice[0].upper()
                 if c in _keys:
                     return _keys[c]
