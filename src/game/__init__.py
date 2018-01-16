@@ -31,28 +31,28 @@ class RPSGame():
         c2 = self.p2.play(self.b1)
         if c1 is None or c2 is None:
             if c1 is None:
-                rps.say("({:}) forfeit".format(self.p1.name))
+                rps.say("({:}) forfeit".format(self.p1))
                 self.s1 = 0
             if c2 is None:
-                rps.say("({:}) forfeit".format(self.p2.name))
+                rps.say("({:}) forfeit".format(self.p2))
                 self.s2 = 0
             self.c = self.climit + 1
             return self.c
         rps.say("({:}) {:} vs {:} ({:})".format(
-            self.p1.name,rps._names[c1],
-            rps._names[c2],self.p2.name))
+            self.p1,rps._names[c1],
+            rps._names[c2],self.p2))
         match = rps.match(c1,c2)
         if match == 1:
             self.s2 += 1
-            rps.say("{:} wins!".format(self.p2.name))
+            rps.say("{:} wins!".format(self.p2))
         elif match == 0:
             self.s1 += 1
-            rps.say("{:} wins!".format(self.p1.name))
+            rps.say("{:} wins!".format(self.p1))
         else:
             rps.say("Null!")
         rps.say("({:}) {:} -- {:} ({:})".format(
-            self.p1.name,self.s1,
-            self.s2,self.p2.name))
+            self.p1,self.s1,
+            self.s2,self.p2))
         self.b1.append(c1)
         self.b2.append(c2)
         self.b1 = self.b1[self.mem:]
@@ -84,9 +84,9 @@ class RPSGame():
         try:
             w = self.__winner
             if w is not None:
-                rps.say("{:} vs {:}: {:} wins!".format(self.p1.name,self.p2.name,w.name))
+                rps.say("{:} vs {:}: {:} wins!".format(self.p1,self.p2,w))
             else:
-                rps.say("{:} vs {:}: null".format(self.p1.name,self.p2.name))
+                rps.say("{:} vs {:}: null".format(self.p1,self.p2))
             return w
         except:
             raise KeyError("Game did not run.")

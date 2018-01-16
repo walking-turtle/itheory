@@ -22,3 +22,10 @@ class RPSPlayer():
     @classmethod
     def get_name(cls):
         raise NotImplementedError('{:}.get_name'.format(str(cls)))
+    def __str__(self):
+        try:
+            return self.name
+        except Exception:
+            raise NotImplementedError('{:}.__str__'.format(str(type(self))))
+    def __repr__(self):
+        return self.__str__()

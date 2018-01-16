@@ -53,7 +53,7 @@ class RPSTournament():
         if len(self.games) == 0:
             raise StopIteration
         (x,y) = self.games.pop()
-        rps.say("Game {:03d}: {:} vs {:}".format(self.game_counter,x.name,y.name))
+        rps.say("Game {:03d}: {:} vs {:}".format(self.game_counter,x,y))
         _g = G(x,y,memory=self.game_memory,steps=self.game_steps)
         with _g as g:
             g.run()
