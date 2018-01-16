@@ -26,6 +26,10 @@ _beats = {
         S: P,
         }
 
+_is_beaten_by = {
+        y:x for x,y in _beats.items()
+        }
+
 def say(*args,**kwargs):
     if VERB:
         print(*args,**kwargs)
