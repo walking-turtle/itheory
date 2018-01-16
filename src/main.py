@@ -3,6 +3,7 @@ import rps,sys
 from players.copycat import Player as CP
 from players.random import Player as RP
 from game import RPSGame as G
+from tournament import RPSTournament as T
 
 __test_counter=0
 __ok_counter=0
@@ -78,6 +79,17 @@ def test_copyrand(ntests=1000):
     r,s1,s2 = run_match(p1,p2,ntests=ntests,steps=20)
     return 0 if (s1+s2 == 0 or r < 0.1) else 1
 
+@test_printing("Tournament run")
+def test_tournament(ntests=1000):
+    ps = [(RP,5),(CP,10)]
+    _t = T(steps=5)
+    for p in ps:
+        _t.add_players(*p)
+    for _ in range(ntests):
+        with _t as t:
+            t.run()
+    return 0
+
 if __name__=='__main__':
     print("Rock: {:}, Paper: {:}, Scissors: {:}".format(rps.R,rps.P,rps.S))
 
@@ -93,6 +105,7 @@ if __name__=='__main__':
     test_copycat()
     test_random()
     test_copyrand()
+    test_tournament()
 
     if __test_counter == __ok_counter:
         sys.exit(0)
