@@ -11,6 +11,8 @@ for k in rps._names:
 _moves = ','.join(_moves)
 
 class Player(players.RPSPlayer):
+    class_name = "HumanPlayer"
+    counter = 0
     def play(self,backlog):
         print("What's your move, {:}? {:}".format(self.name,_moves))
         rps.say("Given backlog: {:}".format([rps._names[k] for k in backlog]))
@@ -24,3 +26,7 @@ class Player(players.RPSPlayer):
                 c = choice[0].upper()
                 if c in _keys:
                     return _keys[c]
+    @classmethod
+    def get_name(cls):
+        cls.counter += 1
+        return '{:}{:d}'.format(cls.class_name,cls.counter)

@@ -12,7 +12,13 @@ def randomfirst(f):
     return g
 
 class RPSPlayer():
-    def __init__(self,name):
-        self.name = str(name)
+    def __init__(self,name=None):
+        if name is not None:
+            self.name = str(name)
+        else:
+            self.name = type(self).get_name()
     def play(self,backlog):
-        raise NotImplemented
+        raise NotImplementedError('{:}.play'.format(str(type(self))))
+    @classmethod
+    def get_name(cls):
+        raise NotImplementedError('{:}.get_name'.format(str(cls)))

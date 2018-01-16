@@ -17,10 +17,11 @@ class RPSGame():
         self.mem = - memory if memory > 0 else 0
 
     def run(self):
-        for x in self:
+        for _ in self:
             pass
 
     def __iter__(self):
+        assert(self.used)
         return self
 
     def __next__(self):
