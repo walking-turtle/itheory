@@ -2,3 +2,4 @@ venv
 __pycache__
 *.pyc
 *[0-9].py
+*.DS_Store
