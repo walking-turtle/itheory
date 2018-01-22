@@ -1,4 +1,5 @@
 import json
+import progressbar
 
 class SafeDict(dict):
     def __getitem__(self,key):
@@ -21,7 +22,7 @@ class Counters(object):
 
     def reduce(self):
         dup = type(self)()
-        t = sum(map(lambda x,y: y, self.__dict__))
+        t = sum(map(lambda x: x[1], self.__dict__.items()))
         for x,y in self.__dict__.items():
             setattr(dup,x,y/t)
         return dup
@@ -57,6 +58,15 @@ class Predictor:
         else:
             self.stats.wrong += 1
         return self.append(x)
+
+def read_file(f):
+    pred = Predictor()
+    with open(f,'r') if isinstance(f,str) else f as the_input:
+        chars = list(the_input.read())
+    bar = progressbar.ProgressBar()
+    for i in bar(range(len(chars))):
+        pred.stat_append(chars[i])
+    return pred.stats.reduce()
 
 def test_predictor():
     l = "aabaabcaabaabc"

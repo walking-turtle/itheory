@@ -1,3 +1,9 @@
-from . import test_predictor
+from . import read_file
+import sys
 
-test_predictor()
+try:
+    f = sys.argv[1]
+except IndexError:
+    f = sys.stdin
+
+print(read_file(f))
