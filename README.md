@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/w2ak/itheory.svg?branch=master)](https://travis-ci.org/w2ak/itheory)
+[![Build Status](https://travis-ci.org/walking-turtle/itheory.svg?branch=master)](https://travis-ci.org/walking-turtle/itheory)
 
 # Information theory project
 
