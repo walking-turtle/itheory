@@ -37,26 +37,22 @@
 *Note that* it might be easier to use `virtualenvwrapper` if you are already
 used to it.
 
-# Python app
-
-* Run python app
-
-```sh
-λ cd /path/to/itheory
-λ ./src/main.py
-```
-
 # Docker image
 
 * Build docker image
 
 ```sh
 λ cd /path/to/itheory
-λ docker build -t itheory .
+λ docker build --file Dockerfile_server -t itheory_server .
+λ docker build --file Dockerfile_client -t itheory_client .
 ```
 
 * Run docker image
 
 ```sh
-λ docker run --rm itheory
+λ cp data/text.txt /tmp/text.txt
+λ docker run --name itheory_server -d -v /tmp/text.txt:/data.txt -p 8000:8000 itheory_server
+λ docker logs itheory_server |& grep '^TOKEN='
+TOKEN="xxxxxxxxx"
+λ docker run --name itheory_client itheory_client xxxxxxxxx
 ```
