@@ -1,4 +1,4 @@
-import json,time
+import json,time,zlib
 
 class TreeData:
     def __init__(self):
@@ -16,19 +16,24 @@ class TreeData:
     def parse(self,data):
         raise NotImplementedError
 
-    def parsef(self,filename):
+    def fparse(self,filename):
         with open(filename,'r') as stream:
             self.parse(stream.read())
 
     def dump(self,stream):
         json.dump(self.tree,stream,separators=(',',':'))
 
-    def dumps(self):
+    def sdump(self):
         return json.dumps(self.tree,separators=(',',':'))
 
-    def dumpf(self,filename):
+    def fdump(self,filename):
         with open(filename,'w') as stream:
             self.dump(stream)
+
+    def zdump(self,filename):
+        data = self.sdump().encode()
+        with open(filename,'wb') as stream:
+            stream.write(zlib.compress(data,9))
 
     def post_load_hook(self):
         raise NotImplementedError
@@ -39,16 +44,20 @@ class TreeData:
         self.tree = new
         self.post_load_hook()
 
-    def loads(self,string):
+    def sload(self,string):
         new = json.loads(string)
         del self.tree
         self.tree = new
         self.post_load_hook()
 
-    def loadf(self,filename):
+    def fload(self,filename):
         with open(filename,'r') as stream:
             self.load(stream)
-        self.post_load_hook()
+
+    def zload(self,filename):
+        with open(filename,'rb') as stream:
+            data = stream.read()
+        self.sload(zlib.decompress(data).decode())
 
     @classmethod
     def merge(cls,src=dict(),dst=dict()):
@@ -138,7 +147,6 @@ class SubStrings(TreeData):
             cls.merge(src=v,dst=dst[k])
 
     def post_load_hook(self):
-        print('Good call')
         self.cache = max(self.cache,self.depth()+1)
 
 class Predictions(TreeData):
@@ -191,6 +199,5 @@ class Predictions(TreeData):
                 print('{:.4g}%'.format(100*(correct/(i+1))))
 
     def post_load_hook(self):
-        print('Good call')
         self.cache = max(self.cache,self.depth()+2)
 
