@@ -4,6 +4,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN ["pip","install","--no-cache-dir","-r","requirements.txt"]
 ADD . .
-RUN ["make","-C","data"]
+VOLUME ["/data.txt"]
 ENV PYTHONPATH /app/src
-CMD ["python","-m","main"]
+CMD ["python","-m","server"]

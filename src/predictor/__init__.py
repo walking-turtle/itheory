@@ -1,5 +1,5 @@
 import json,time
-import progressbar
+# import progressbar
 
 class SafeDict(dict):
     def __getitem__(self,key):
@@ -28,11 +28,13 @@ class Counters(object):
         return dup
 
 class PredictableText:
-    def __init__(self,text):
+    def __init__(self,text,lower=0,upper=None):
         if isinstance(text,str):
             self.string=text
         else:
             raise TypeError
+        self.lower = lower
+        self.upper = upper
 
     def __iter__(self):
         return Predictor(self)
@@ -42,12 +44,14 @@ class Predictor:
         self.text = text
         self.string=text.string
         self.stats = Counters()
-        self.c = 0
-        self.l = len(self.string)
+        self.c = text.lower
+        self.l = len(self.string) if text.upper is None else text.upper
+        """
         self.bar = progressbar.ProgressBar(max_value=self.l,redirect_stdout=True,\
                 widgets=['[',Widget(self),'] ',\
                 progressbar.Percentage(),' (',progressbar.Counter(),' of {:d}) '.format(self.l),\
                 progressbar.Bar(),' ',progressbar.Timer()])
+        """
         self.n = None
         self.δcount = 0
         self.δ = 0.1
@@ -101,7 +105,8 @@ class Predictor:
     def __next__(self):
         if self.c > self.l:
             self.text.stats = self.stats.reduce()
-            self.bar.update(self.l)
+            self.text.fullstats = str(self.stats)
+            # self.bar.update(self.l)
             raise StopIteration
         p = self.predict(self.c)
         if self.c < self.l:
@@ -112,16 +117,18 @@ class Predictor:
                 self.stats.correct += 1
             else:
                 self.stats.wrong += 1
-        self.update_bar()
+        # self.update_bar()
         self.c += 1
         return p
 
+"""
 class Widget:
     def __init__(self,p):
         self.predictor = p
 
     def __call__(self,*args):
         return '{:08.04f}% correct'.format(100*self.predictor.stats.reduce().correct)
+"""
 
 def read_file(f):
     with open(f,'r') if isinstance(f,str) else f as the_input:
