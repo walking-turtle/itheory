@@ -161,4 +161,4 @@ api.add_resource(TaskAPI, '/itheory/api/tasks/<int:id>', endpoint='task')
 if __name__=='__main__':
     sys.stderr.write('TOKEN="{:}"\n'.format(GLOBAL_TOKEN))
     sys.stderr.flush()
-    app.run(host='127.0.0.1',port=8000)
+    app.run(host='0.0.0.0',port=8000)

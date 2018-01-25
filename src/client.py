@@ -1,7 +1,7 @@
 import sys,json,requests
 from predictor import PredictableText
 
-GLOBAL_SERVER = "http://127.0.0.1:8000/itheory/api"
+GLOBAL_SERVER = "https://api.neze.fr/itheory/api"
 if len(sys.argv) < 2:
     sys.exit(1)
 GLOBAL_TOKEN = sys.argv[1]
@@ -44,8 +44,6 @@ def put_task(task,correct=0,processed=0):
     response = requests.put(api_url, headers=headers, json=data)
     if response.status_code == 200:
         return
-    print(response.status_code)
-    print(response.text)
     return
 
 if __name__=='__main__':
