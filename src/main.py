@@ -1,118 +1,103 @@
 #!/usr/bin/env python
-import rps,sys
-from players.copycat import Player as CP
-from players.random import Player as RP
-from game import RPSGame as G
-from tournament import RPSTournament as T
+import requests,io,zipfile,progressbar,predictor
 
-__test_counter=0
-__ok_counter=0
-__ko_counter=0
+BIBLEHUB_USERNAME="bh733"
+BIBLEHUB_PASSWORD="qx358"
+BIBLEHUB_ARCHIVE="http://biblehub.info/data/bibles.zip"
 
-def test_printing(title):
-    if len(title)>20:
-        title=title[:17]+'...'
-    def wrapper(f):
-        def g(*args,**kwargs):
-            global __test_counter,__ok_counter,__ko_counter
-            __test_counter+=1
-            print("**** TEST {:03d}: {:20} ****".format(
-                __test_counter,
-                title[:20]))
-            try:
-                r = f(*args,**kwargs)
-            except Exception:
-                r = 1
-            print("**** TEST {:03d}: {:20} ****".format(
-                __test_counter,
-                "FAILED" if r else "SUCCESS"))
-            if r:
-                __ko_counter+=1
-            else:
-                __ok_counter+=1
-        return g
-    return wrapper
+def get_progressbar(name='',maxval=None):
+    if isinstance(name,bytes):
+        name = name.decode('ascii')
+    if len(name)>20:
+        name=name[:17]+'...'
+    if maxval is None:
+        cls = progressbar.widgets.BouncingBar
+        maxval = progressbar.base.UnknownLength
+    else:
+        cls = progressbar.widgets.Bar
+    widgets = [\
+            '{:20}'.format(name),
+            ' (',
+            progressbar.widgets.Percentage(),
+            ')',
+            cls(),
+            progressbar.widgets.ETA() ]
+    return progressbar.ProgressBar(widgets=widgets,maxval=maxval).start()
 
-@test_printing("Copycat vs Copycat")
-def test_copycat(ntests=1000):
-    p1 = CP("Cat1")
-    p2 = CP("Cat2")
-    _g = G(p1,p2,steps=20)
-    for _ in range(ntests):
-        with _g as g:
-            g.run()
-        assert(g.winner() is None)
-    _g = G(p1,p2,steps=21)
-    for _ in range(ntests):
-        with _g as g:
-            next(g)
-            w = g.p1 if (g.s1 > g.s2) else g.p2 if (g.s2 > g.s1) else None
-            g.run()
-        assert(g.winner() is w)
-    return 0
+def get_bibles():
+    # Send HTTP request and get headers
+    response = requests.get(BIBLEHUB_ARCHIVE,\
+            auth=(BIBLEHUB_USERNAME, BIBLEHUB_PASSWORD),\
+            stream=True)
+    assert(response.status_code == 200)
 
-def run_match(p1,p2,ntests=1000,steps=20):
-    score = { p1: 0, p2: 0 }
-    _g = G(p1,p2,steps=20)
-    for _ in range(ntests):
-        with _g as g:
-            g.run()
-        w = g.winner()
-        if w is not None:
-            score[w]+=1
-    s1 = score[p1]
-    s2 = score[p2]
-    r = abs(s1 - s2)/(s1+s2)
-    return r,s1,s2
+    # Get paramaters from response size
+    response_size = int(response.headers['Content-Length'])
+    chunk_size = max(1024,response_size//99)
+    num_bars = -(-response_size//chunk_size)
 
-@test_printing("Random vs Random")
-def test_random(ntests=1000):
-    p1 = RP("Random1")
-    p2 = RP("Random2")
-    r,s1,s2 = run_match(p1,p2,ntests=ntests,steps=20)
-    return 0 if (s1+s2 == 0 or r < 0.1) else 1
+    # Prepare stream to write data from the response
+    zipped_stream = io.BytesIO()
 
-@test_printing("Random vs Copycat")
-def test_copyrand(ntests=1000):
-    p1 = RP("Random")
-    p2 = CP("Copycat")
-    r,s1,s2 = run_match(p1,p2,ntests=ntests,steps=20)
-    return 0 if (s1+s2 == 0 or r < 0.1) else 1
+    # Get response and show progressbar
+    bar = get_progressbar(name='Downloading bibles', maxval=num_bars)
+    i = 0
+    for chunk in response.iter_content(chunk_size=chunk_size):
+        bar.update(i)
+        zipped_stream.write(chunk)
+        i+=1
+    bar.finish()
 
-@test_printing("Tournament run")
-def test_tournament(ntests=1000):
-    ps = [(RP,5),(CP,10)]
-    _t = T(steps=5)
-    for p in ps:
-        _t.add_players(*p)
-    for _ in range(ntests):
-        with _t as t:
-            t.run()
-    return 0
+    # Rewind stream to read it with zipfile
+    zipped_stream.seek(0,0)
+
+    # Open stream as a zipped object
+    zipped_object = zipfile.ZipFile(zipped_stream,'r')
+
+    # Get file name then stream to text file
+    text_filename = zipped_object.namelist()[0]
+    text_stream = zipped_object.open(text_filename, 'r')
+
+    # Get first line of text. This is a tab separated csv file
+    csv_header = list(map(lambda x: x.strip(), text_stream.readline().strip().split(b'\t')))[1:]
+
+    # Prepare columns to fill from the text lines
+    csv_columns = [list()] + [ list() for _ in csv_header ]
+
+    # Read lines and show bar
+    bar = get_progressbar(name='Separating versions')
+    i = 0
+    csv_line = text_stream.readline()
+    while csv_line:
+        bar.update(i)
+        csv_line = csv_line.strip()
+        for c,v in zip(csv_columns,csv_line.split(b'\t')):
+            c.append(v.strip())
+        csv_line = text_stream.readline()
+        i+=1
+    bar.finish()
+
+    # Recompose data
+    csv_firstcolumn = csv_columns[0]
+    csv_columns = csv_columns[1:]
+    bibles_data = { k: b'\n'.join(map(lambda x: b'\t'.join(x), zip(csv_firstcolumn,c))) for k,c in zip(csv_header,csv_columns) }
+    return bibles_data
 
 if __name__=='__main__':
-    print("Rock: {:}, Paper: {:}, Scissors: {:}".format(rps.R,rps.P,rps.S))
+    bibles = get_bibles()
+    substrings = predictor.SubStrings(cache=10)
+    print('\n\n**** Reading bibles ****')
+    for name,bible in bibles.items():
+        bar = get_progressbar(name=name,maxval=len(bible))
+        for i in substrings.parseiter(bible):
+            bar.update(i)
+        bar.finish()
 
-    rps.VERB = 1
-    rps.match(rps.R,rps.P)
-    rps.match(rps.P,rps.R)
-    rps.match(rps.P,rps.S)
-    rps.match(rps.S,rps.P)
-    rps.match(rps.S,rps.R)
-    rps.match(rps.R,rps.S)
+    print('\n\n**** Building predictions ****')
+    predictions = predictor.Predictions.from_substrings(substrings)
 
-    rps.VERB = 0
-    test_copycat()
-    test_random()
-    test_copyrand()
-    test_tournament()
-
-    if __test_counter == __ok_counter:
-        sys.exit(0)
-    message = """
-TESTS: {:03d}
-OK   : {:03d}
-KO   : {:03d}
-"""
-    print(message.format(__test_counter,__ok_counter,__ko_counter))
-    sys.exit(1)
+    print('\n\n**** Running prediction on each bible ****')
+    for name,bible in bibles.items():
+        print('\n{:}'.format(name))
+        result,_ = predictions.run(bible,verb=1)
+        print('{:}: {:6.2f}%'.format(name,result*100))

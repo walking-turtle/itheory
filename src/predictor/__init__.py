@@ -1,4 +1,5 @@
 import json,time,zlib
+import progressbar
 
 class TreeData:
     def __init__(self):
@@ -13,8 +14,12 @@ class TreeData:
     def get(self,sequence):
         raise NotImplementedError
 
-    def parse(self,data):
+    def parseiter(self,data):
         raise NotImplementedError
+
+    def parse(self,data):
+        for _ in self.parseiter(data):
+            pass
 
     def fparse(self,filename):
         with open(filename,'r') as stream:
@@ -130,11 +135,14 @@ class SubStrings(TreeData):
             node = node[x]
         node['__'] = node.get('__',0)+1
 
-    def parse(self,data):
+    def parseiter(self,data):
         last = len(data)
+        step = last//100
         for i in range(last):
             for j in range(min(self.cache,i)):
                 self.add(data[i-j-1:i])
+            if i%step == 1:
+                yield i
 
     @classmethod
     def merge(cls,src=dict(),dst=dict()):
@@ -189,14 +197,20 @@ class Predictions(TreeData):
             node = node[x]
         return node.get('__',None)
 
-    def run(self,text):
+    def run(self,text,verb=0):
         correct = 0
         total = len(text)
+        if verb:
+            bar = progressbar.ProgressBar(maxval=total).start()
+            step = total//100
         for i in range(total):
             if text[i] == self.get(text[max(0,i-self.cache):i]):
                 correct += 1
-            if i % 5000 == 1:
-                print('{:.4g}%'.format(100*(correct/(i+1))))
+            if verb and (i%step == 1):
+                bar.update(i)
+        if verb:
+            bar.finish()
+        return correct/total,total
 
     def post_load_hook(self):
         self.cache = max(self.cache,self.depth()+2)
