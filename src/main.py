@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import requests,io,zipfile,progressbar,predictor
+import requests,io,zipfile,progressbar,predictor,gc
 
 BIBLEHUB_USERNAME="bh733"
 BIBLEHUB_PASSWORD="qx358"
@@ -85,6 +85,7 @@ def get_bibles():
 
 if __name__=='__main__':
     bibles = get_bibles()
+    gc.collect()
     substrings = predictor.SubStrings(cache=10)
     print('\n\n**** Reading bibles ****')
     for name,bible in bibles.items():
@@ -92,12 +93,15 @@ if __name__=='__main__':
         for i in substrings.parseiter(bible):
             bar.update(i)
         bar.finish()
+        gc.collect()
 
     print('\n\n**** Building predictions ****')
-    predictions = predictor.Predictions.from_substrings(substrings)
+    predictions = predictor.Predictions.from_substrings(substrings,consume=True)
+    gc.collect()
 
     print('\n\n**** Running prediction on each bible ****')
     for name,bible in bibles.items():
         print('\n{:}'.format(name))
         result,_ = predictions.run(bible,verb=1)
         print('{:}: {:6.2f}%'.format(name,result*100))
+        gc.collect()

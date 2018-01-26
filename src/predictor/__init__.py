@@ -71,14 +71,16 @@ class TreeData:
     def update(self,other):
         type(self).merge(src=other.tree,dst=self.tree)
 
-    def iteritems(self,value=None,depth=None):
+    def iteritems(self,value=None,depth=None,consume=False):
         if value is None or depth is None:
             value = self.tree
             depth = 0
-        for c in filter(lambda x: x!='__',value):
+        for c in list(filter(lambda x: x!='__',value)):
             yield c,value[c],depth
-            for k,v,d in self.iteritems(value=value[c],depth=depth+1):
+            for k,v,d in self.iteritems(value=value[c],depth=depth+1,consume=False):
                 yield k,v,d
+            if consume:
+                del value[c]
 
     def depth(self):
         return max(d for k,v,d in self.iteritems())
@@ -163,10 +165,10 @@ class Predictions(TreeData):
         self.cache = cache
 
     @classmethod
-    def from_substrings(cls,substrings):
+    def from_substrings(cls,substrings,consume=False):
         self = cls(cache = substrings.cache)
         path = list()
-        for key,value,depth in substrings.iteritems():
+        for key,value,depth in substrings.iteritems(consume=consume):
             while depth >= len(path):
                 path.append('xxx')
             path[depth] = key
@@ -179,6 +181,8 @@ class Predictions(TreeData):
                         best_child = child
                         maximum = value[child]['__']
                 self.add(path[:depth+1], best_child)
+        if consume:
+            del substrings
         return self
 
     def add(self,sequence,prediction):
