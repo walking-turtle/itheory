@@ -88,7 +88,7 @@ if __name__=='__main__':
     gc.collect()
     substrings = predictor.SubStrings(cache=10)
     print('\n\n**** Reading bibles ****')
-    for name,bible in bibles.items():
+    for name,bible in list(bibles.items())[:2]:
         bar = get_progressbar(name=name,maxval=len(bible))
         for i in substrings.parseiter(bible):
             bar.update(i)
