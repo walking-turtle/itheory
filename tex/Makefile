@@ -2,11 +2,12 @@
 
 TEX:=$(wildcard *.tex)
 PDF:=${TEX:%.tex=%.pdf}
-TEXMK:=latexmk -lualatex
+TEXMK:=lualatex --shell-escape
 
 all: ${PDF}
 
 %.pdf: %.tex
+	${TEXMK} $<
 	${TEXMK} $<
 
 clean:

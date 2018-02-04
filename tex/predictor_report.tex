@@ -1,6 +1,6 @@
 % vim: expandtab tabstop=2 softtabstop=2 shiftwidth=2
-\documentclass[a4paper,11pt]{article}
-\usepackage[scale=.8]{geometry}
+\documentclass[a4paper,12pt]{article}
+%\usepackage[scale=.8]{geometry}
 \usepackage[english,noconfigs]{babel}
 \usepackage{ifluatex,ifxetex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
@@ -8,8 +8,14 @@
   \usepackage[T1]{fontenc}
 \fi
 
+\usepackage[ruled]{algorithm2e}
+\usepackage[toc,page]{appendix}
+\usepackage{minted}
+
 \usepackage{graphicx}
 \graphicspath{{graphics/}}
+
+\usepackage{lipsum}
 
 \title{%
   Universal predictor\\\small%
@@ -25,5 +31,79 @@
 \begin{document}
 \maketitle
 
+\vspace*{\fill}
+
+\begin{abstract}
+  \lipsum[1-2]
+\end{abstract}
+
+\vspace*{\fill}
+
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+\section{Universal prediction algorithm}
+
+  \subsection{Simplified version}
+
+  \begin{algorithm}
+    \KwData{Character flow \textit{input}.}
+    \KwResult{Predictions \textit{output} and success rate \textit{success}.}
+
+    \caption{\label{simplified}Simplified version of universal prediction.}
+  \end{algorithm}
+
+  \subsection{Adding refinements}
+
+\section{Variation proposal}
+
+  % Blabla: dans certains contextes (langues fixées, etc.) il peut être censé
+  % d'avoir un algorithme qui apprend avant de faire de la prédiction.
+  % Proposition d'un tel algorithme.
+
+  \subsection{Learning algorithm}
+
+  \subsection{Prediction algorithm}
+
+  \subsection{Comparison}
+
+  % Performance: difficilement comparable car on change l'équilibre du compromis
+  % précomputation/prédiction.
+
+\section{Performance tryouts and issues}
+
+  \subsection{Increasing the data sizes}
+
+  \subsection{Distributing the algorithms}
+
+\section*{Lessons learned}
+\addcontentsline{toc}{section}{Lessons learned}
+
+  \lipsum[8-9]
+
+\clearpage
+\begin{appendices}
+  \section{Simplified universal prediction}
+
+    %\lstinputlisting[language=Python]{code/simplified.py}
+    \inputminted[linenos]{python}{code/simplified.py}
+
+  \clearpage
+  \section{Universal prediction}
+
+    \lipsum[11-12]
+
+  \clearpage
+  \section{Learning and predictiong}
+
+    \lipsum[13-14]
+
+\end{appendices}
 
 \end{document}

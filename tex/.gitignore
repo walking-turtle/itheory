@@ -2,4 +2,7 @@
 !.gitignore
 !*.tex
 !Makefile
+!graphics/
 !graphics/*
+!code/
+!code/*
