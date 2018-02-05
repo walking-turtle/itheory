@@ -38,7 +38,7 @@ class PredictableText:
         return Predictor(self)
 
 class Predictor:
-    def __init__(self,text):
+    def __init__(self,text,alpha=1):
         self.text = text
         self.string=text.string
         self.stats = Counters()
@@ -51,6 +51,7 @@ class Predictor:
         self.n = None
         self.δcount = 0
         self.δ = 0.1
+        self.alpha = alpha
 
     def predict(self,l=None):
         if l is None:
@@ -64,24 +65,23 @@ class Predictor:
         """
         pattern_length = 1
         controlled_element = self.string[l-pattern_length]
-        end_pattern_indices = set()
+        end_pattern_indices = list()
         tmp_end_pattern_indices = {\
                 i + pattern_length - 1\
                 for i in range(l-pattern_length)\
                 if self.string[i] is controlled_element\
                 }
         while len(tmp_end_pattern_indices):
-            del end_pattern_indices
-            end_pattern_indices = tmp_end_pattern_indices
+            end_pattern_indices.append(tmp_end_pattern_indices)
             pattern_length += 1
             controlled_element = self.string[l-pattern_length]
             tmp_end_pattern_indices = {\
                     i + pattern_length - 1\
                     for i in range(l-pattern_length)\
                     if self.string[i] is controlled_element\
-                    } & end_pattern_indices
+                    } & end_pattern_indices[-1]
         if len(end_pattern_indices):
-            return self.string[max(end_pattern_indices)+1]
+            return self.string[max(end_pattern_indices[-1])+1]
         return None
 
     def update_delta(self):

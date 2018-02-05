@@ -6,4 +6,4 @@ install:
 env:
   - PYTHONPATH=src
 script:
-  - python -m main
+  - python -m predictor data/short.txt
