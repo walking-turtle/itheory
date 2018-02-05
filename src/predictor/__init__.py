@@ -84,7 +84,8 @@ class Predictor:
         if len(end_pattern_indices):
             max_pattern_length = len(end_pattern_indices)
             index = min(max_pattern_length-1,int(max_pattern_length*self.alpha))
-            return self.string[max(end_pattern_indices[index])+1]
+            predictions = [self.string[x+1] for x in end_pattern_indices[index]]
+            return max(set(predictions),key=predictions.count)
         return None
 
     def update_delta(self):
