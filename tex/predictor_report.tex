@@ -91,6 +91,8 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
   \subsection{Adding refinements}
 
+  The algorithm \ref{complete} introduced in \cite{paper} finds the longest suffix match, as previously. However, it includes a parameter $\alpha$ that is multiplied by the length of the longest suffix match found, giving a new length. We look at the suffix matches that have this new lenght and return the prediction character (the character following the match) with higher frequency among this set.
+
     \begin{algorithm}
       \KwData{Character flow \textit{input}, parameter $\alpha$.}
       \KwResult{Prediction \textit{output}.}
@@ -110,9 +112,12 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
       \caption{\label{complete}Universal prediction.}
     \end{algorithm}
 
+    The implementation for this algorithm is exposed in annex \ref{code_complete}.
+
     \section{Variation proposal}\label{variation_algo}
 
-  % Blabla: dans certains contextes (langues fixées, etc.) il peut être censé
+
+   Blabla: dans certains contextes (langues fixées, etc.) il peut être censé
   % d'avoir un algorithme qui apprend avant de faire de la prédiction.
   % Proposition d'un tel algorithme.
 
@@ -175,7 +180,7 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
     \inputminted[linenos]{python}{code/simplified.py}
 
   \clearpage
-  \section{Universal prediction}\label{code_universal}
+  \section{Universal prediction}\label{code_complete}
 
     \inputminted[linenos]{python}{code/complete.py}
 
