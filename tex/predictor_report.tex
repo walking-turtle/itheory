@@ -48,8 +48,17 @@
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction}
 
-\section{Universal prediction algorithm}
+In this work we considered the problem of implementing an universal predictor based on patter matching. An universal predictor aims to perform well without knowing knowing the underlying probabilistic model of the data to be analysed.
 
+In section \ref{paper_algos} we present an implementation of the basic idea of a predictor proposed by \citeauthor{basic_algo} \cite{basic_algo}, called \textit{Sampled Pattern Matching} (SPM) by \citeauthor{paper} \cite{paper}. Though the former was not an universal predictor, it was a good density estimator and was used by \citeauthor{paper} \cite{paper} as the base idea to develop an universal predictor. The implementation of this universal predictor is also presented in \ref{paper_algos}.
+
+Section \ref{variation_algo} exposes a variation of the predictor algorithm proposed by us and based on Machine Learning techniques and pre-computation. We compare its performance with the universal predictor of section \ref{paper_algos}.
+
+Finally, in section \ref{tests} we discuss performance tests for the algorithms implemented in this work, as well as implementation issues and possible solutions for them.
+
+\section{Universal prediction algorithm}\label{paper_algos}
+
+  
   \subsection{Simplified version}
 
     \begin{algorithm}
@@ -68,7 +77,7 @@
       \caption{\label{simplified}Universal prediction.}
     \end{algorithm}
 
-\section{Variation proposal}
+    \section{Variation proposal}\label{variation_algo}
 
   % Blabla: dans certains contextes (langues fixées, etc.) il peut être censé
   % d'avoir un algorithme qui apprend avant de faire de la prédiction.
@@ -83,7 +92,7 @@
   % Performance: difficilement comparable car on change l'équilibre du compromis
   % précomputation/prédiction.
 
-\section{Performance tryouts and issues}
+  \section{Performance tryouts and issues}\label{tests}
 
   \subsection{Increasing the data sizes}
 
