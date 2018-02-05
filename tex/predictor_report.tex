@@ -61,20 +61,48 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
   
   \subsection{Simplified version}
 
+    % Explain the idea of the algorithm, and mention the algorithm
+
     \begin{algorithm}
       \KwData{Character flow \textit{input}.}
-      \KwResult{Predictions \textit{output} and success rate \textit{success}.}
+      \KwResult{Prediction \textit{output}.}
+
+      \textit{patterns} \gets{}
+        $\left\{ (\textit{substring},x) :%
+        \textit{substring}\cdot x\subset\textit{input} \wedge
+        \textit{input} = w\cdot\textit{substring} \right\}$
+        with multiplicity\;
+
+      \textit{maxlen} \gets{} $\max\{\#\textit{pattern} :
+        (\textit{pattern},x)\in\textit{patterns}\}$\;
+
+      \KwRet{$x$} where $(\textit{pattern},x)\in\textit{patterns}$ is the most
+        recent pattern of length \textit{maxlen}\;
 
       \caption{\label{simplified}Simplified version of universal prediction.}
     \end{algorithm}
 
+    % First implementation (annex A), non-optimized pattern search.
+
   \subsection{Adding refinements}
 
     \begin{algorithm}
-      \KwData{Character flow \textit{input}.}
-      \KwResult{Predictions \textit{output} and success rate \textit{success}.}
+      \KwData{Character flow \textit{input}, parameter $\alpha$.}
+      \KwResult{Prediction \textit{output}.}
 
-      \caption{\label{simplified}Universal prediction.}
+      \textit{patterns} \gets{}
+        $\left\{ (\textit{substring},x) :%
+        \textit{substring}\cdot x\subset\textit{input} \wedge
+        \textit{input} = w\cdot\textit{substring} \right\}$
+        with multiplicity\;
+
+      \textit{len} \gets{} $\alpha\times\max\{\#\textit{pattern} :
+        (\textit{pattern},x)\in\textit{patterns}\}$\;
+
+      \KwRet{$x$} the most frequent among the patterns $(\textit{pattern},x)$
+        of length \textit{len} in \textit{patterns}\;
+
+      \caption{\label{complete}Universal prediction.}
     \end{algorithm}
 
     \section{Variation proposal}\label{variation_algo}
@@ -85,7 +113,32 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
   \subsection{Learning algorithm}
 
+  \begin{algorithm}
+    \KwData{Texts to read \textit{input}, memory size \textit{cache}.}
+    \KwResult{Substrings and number of occurrences.}
+
+    \textit{substrings} \gets{}
+      $\left\{ \textit{substring} : \textit{substring}\subset\textit{input}
+      \wedge \#\textit{substring} \leq \textit{cache} \right\}$
+      with multiplicity\;
+
+    \KwRet{\textit{substrings}} with multiplicity count\;
+
+    \caption{\label{learning}Learning patterns by reading.}
+  \end{algorithm}
+
   \subsection{Prediction algorithm}
+
+  \begin{algorithm}
+    \KwData{Substrings and multiplicity counts.}
+    \KwResult{Predictions}
+
+
+
+    \KwRet{\textit{substrings}} with multiplicity count\;
+
+    \caption{\label{predicting}Turning substrings into predictions}
+  \end{algorithm}
 
   \subsection{Comparison}
 
