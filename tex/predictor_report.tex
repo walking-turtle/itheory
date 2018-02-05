@@ -52,14 +52,21 @@
 
   \subsection{Simplified version}
 
-  \begin{algorithm}
-    \KwData{Character flow \textit{input}.}
-    \KwResult{Predictions \textit{output} and success rate \textit{success}.}
+    \begin{algorithm}
+      \KwData{Character flow \textit{input}.}
+      \KwResult{Predictions \textit{output} and success rate \textit{success}.}
 
-    \caption{\label{simplified}Simplified version of universal prediction.}
-  \end{algorithm}
+      \caption{\label{simplified}Simplified version of universal prediction.}
+    \end{algorithm}
 
   \subsection{Adding refinements}
+
+    \begin{algorithm}
+      \KwData{Character flow \textit{input}.}
+      \KwResult{Predictions \textit{output} and success rate \textit{success}.}
+
+      \caption{\label{simplified}Universal prediction.}
+    \end{algorithm}
 
 \section{Variation proposal}
 
@@ -103,7 +110,7 @@
   \clearpage
   \section{Universal prediction}
 
-    \lipsum[11-12]
+    \inputminted[linenos]{python}{code/complete.py}
 
   \clearpage
   \section{Learning and predicting}

@@ -1,6 +1,6 @@
 class Predictions(TreeData):
     """
-    If `sequence` is "abcde" and `prediction` is "f", add
+    If `sequence' is "abcde" and `prediction' is "f", add
     `e -> d -> c -> b -> a -> f' to the tree.
     """
     def add(self,sequence,prediction):
