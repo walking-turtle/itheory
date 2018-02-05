@@ -10,11 +10,26 @@
 \usepackage{beamertpt}
 \graphicspath{{graphics/}}
 
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+\setbeamercovered{transparent=15}
+
 \title[Pattern-based prediction algorithms, applications and variations]
       {Universal predictor}
 \author{%
   Carolina De Senne Garcia\\%
   Clément Durand%
+}
+
+\renewcommand{\arraystretch}{1}
+\setlength{\tabcolsep}{0.5ex}
+\setlength{\fboxsep}{0.4ex}
+
+\colorlet{fboxcolor}{white}
+\newcommand\cfbox[1]{%
+  \colorlet{currentcolor}{.}%
+  {\color{fboxcolor}\fbox{\color{currentcolor}#1}}%
 }
 
 \begin{document}
@@ -34,11 +49,29 @@
 
 \tptsection{Simplified universal prediction}
 
+\begin{frame}{Example}\centering
+  \input{code/simplified.tex}
+\end{frame}
+
 \tptsection{Universal prediction}
+
+\begin{frame}{Example}\centering
+  \input{code/complete.tex}
+\end{frame}
 
 \tptsection{Variation proposal}
 
+\begin{frame}{Reading substrings}\centering
+  \input{code/learning.tex}
+\end{frame}
+
 \tptsection{Experimentation}
+
+\begin{frame}{Parameters influence}
+\end{frame}
+
+\begin{frame}{Distributed design}
+\end{frame}
 
 \tptsection{Comparison}
 
