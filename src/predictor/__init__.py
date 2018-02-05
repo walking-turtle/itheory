@@ -28,17 +28,18 @@ class Counters(object):
         return dup
 
 class PredictableText:
-    def __init__(self,text):
+    def __init__(self,text,alpha=1.):
         if isinstance(text,str):
             self.string=text
+            self.alpha=alpha
         else:
             raise TypeError
 
     def __iter__(self):
-        return Predictor(self)
+        return Predictor(self,alpha=self.alpha)
 
 class Predictor:
-    def __init__(self,text,alpha=1):
+    def __init__(self,text,alpha=1.):
         self.text = text
         self.string=text.string
         self.stats = Counters()
@@ -81,7 +82,9 @@ class Predictor:
                     if self.string[i] is controlled_element\
                     } & end_pattern_indices[-1]
         if len(end_pattern_indices):
-            return self.string[max(end_pattern_indices[-1])+1]
+            max_pattern_length = len(end_pattern_indices)
+            index = min(max_pattern_length-1,int(max_pattern_length*self.alpha))
+            return self.string[max(end_pattern_indices[index])+1]
         return None
 
     def update_delta(self):
@@ -123,9 +126,9 @@ class Widget:
     def __call__(self,*args):
         return '{:08.04f}% correct'.format(100*self.predictor.stats.reduce().correct)
 
-def read_file(f):
+def read_file(f,alpha=1.):
     with open(f,'r') if isinstance(f,str) else f as the_input:
-        t = PredictableText(the_input.read())
+        t = PredictableText(the_input.read(),alpha=alpha)
     for _ in t:
         pass
     return t.stats
