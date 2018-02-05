@@ -58,8 +58,11 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
 \section{Universal prediction algorithm}\label{paper_algos}
 
-  
+  In this section we present the algorithms from \cite{paper} which were implemented and tested in our work: the simplified version uses the longest suffix pattern match in the text we want to predict. The second version adds a parameter $\alpha$ to check for pattern matches of size $\alpha$ times the longest match size. The algorithms details are explained in their corresponding subsections bellow.
+
   \subsection{Simplified version}
+
+  The base algorithm consists in finding the longest substrings from the input stream that match with the stream suffix (and that are not the suffix itself, of course). It then takes the most recent substring (in terms of the stream input data) from the set of longest substrings (which can be of size 1) and returns the character that follows this substring in the input data as a prediction. These steps are described in algorithm \ref{simplified}.
 
     % Explain the idea of the algorithm, and mention the algorithm
 
@@ -81,6 +84,8 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
       \caption{\label{simplified}Simplified version of universal prediction.}
     \end{algorithm}
+
+    The implementation for this algorithm is exposed in annex \ref{code_simplified}.
 
     % First implementation (annex A), non-optimized pattern search.
 
@@ -165,12 +170,12 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
   simplicity sake. Comments were added for clarity and the full source code
   remains available.
 
-  \section{Simplified universal prediction}
+  \section{Simplified universal prediction}\label{code_simplified}
 
     \inputminted[linenos]{python}{code/simplified.py}
 
   \clearpage
-  \section{Universal prediction}
+  \section{Universal prediction}\label{code_universal}
 
     \inputminted[linenos]{python}{code/complete.py}
 
