@@ -8,6 +8,8 @@ all: ${PDF}
 
 %.pdf: %.tex
 	${TEXMK} $<
+	bibtex $*
+	${TEXMK} $<
 	${TEXMK} $<
 
 clean:
