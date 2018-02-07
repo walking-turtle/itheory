@@ -39,21 +39,93 @@
   \begin{itemize}
     \item Algorithms
       \begin{itemize}
-        \item Simplified universal prediction
-        \item Universal prediction
+        \item Simplified predictor
+        \item Universal predictor
         \item Variation proposal
       \end{itemize}
     \item Experimentation \& comparison
   \end{itemize}
 \end{frame}
 
-\tptsection{Simplified universal prediction}
+\tptsection{Simplified predictor}
 
 \begin{frame}{Example}\centering
   \input{code/simplified.tex}
 \end{frame}
 
-\tptsection{Universal prediction}
+  \begin{frame}{Simple predictor}
+    \begin{itemize}
+      \item \textbf{Basic idea}: find the longest suffix match in the given string (that is not a suffix itself)
+    \end{itemize}
+
+    \vspace{\fill}
+
+    Example:
+
+  \underline{Original text}: ``If you repeat on purpose, repeating is gorgeous."
+
+    \vspace{\fill}
+
+    \underline{Input}: ``If you \textbf{repe}at on purpose, \textbf{repe}"
+
+    \underline{Output}: \textbf{a} 
+    % character following the longest match
+  \end{frame}
+
+  \begin{frame}{Implementation Overview}
+    \begin{itemize}
+      \item \textbf{Match pattern end indexes}: stored in a set
+      \item \textbf{Scan set} to find longer matches until none is found
+    \end{itemize}
+    \vspace{\fill}
+
+    Always better with an example...
+    \vspace{\fill}
+
+    \begin{table}
+      \centering
+      \resizebox{\textwidth}{!}{
+      \begin{tabular}{c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c}
+      i&f& &e&p&e& &r&e&p&e&a&t& &o&n& &p&u&r&p&e&p&e&,& &r&e&p&e\\
+      0&1&2&3&4&5&6&7&8&9&10&11&12&13&14&15&16&17&18&19&20&21&22&23&24&25&26&27&28&29
+      \end{tabular}
+    }
+    \end{table}
+
+    \only<1>{
+      $$\text{Match length}=1$$
+
+      $$\text{Pattern}=e $$
+
+      $$\text{ Set}=\{ 3,5,8,10,21,23,27 \}$$
+    }
+
+    \only<2>{
+      $$\text{Match length}=2$$
+
+      $$\text{Pattern}=pe $$
+
+      $$\text{ Set}=\{ 5,10,21,23 \}$$
+    }
+
+    \only<3>{
+      $$\text{Match length}=3$$
+
+      $$\text{Pattern}=epe $$
+
+      $$\text{ Set}=\{ 5,10,23 \}$$
+    }
+
+    \only<4>{
+      $$\text{Match length}=4$$
+
+      $$\text{Pattern}=repe $$
+
+      $$\text{ Set}=\{ 10 \}$$
+    }
+  \end{frame}
+
+\tptsection{Universal predictor}
 
 \begin{frame}{Example}\centering
   \input{code/complete.tex}
