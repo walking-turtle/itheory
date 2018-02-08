@@ -7,8 +7,7 @@
   \usepackage[T1]{fontenc}
 \fi
 
-\usepackage{beamertpt}
-\graphicspath{{images/}}
+\usepackage{beamertptalt}
 
 \title[]
       {Loglog counting of large cardinalities}
@@ -22,9 +21,34 @@
 \tptsection{Introduction}
 
   \begin{frame}{Motivation}
+    \only<+->{\vspace*{.4cm}}
+    \begin{center}
+      Estimating cardinality of large datasets
+    \end{center}\bigskip
+
+    \begin{itemize}[<+-|alert@+>]
+      \item Counting TCP flows
+      \item Counting colors
+      \item Counting distinct words
+      \item Counting birth dates, letters
+    \end{itemize}
   \end{frame}
 
   \begin{frame}{Challenges}
+    \only<+->{\vspace*{.4cm}}
+    \begin{center}
+      Difficulties from datasets nature
+    \end{center}\bigskip
+
+    \begin{itemize}[<+-|alert@+>]
+      \item Data sizes
+        \begin{itemize}
+          \item Too much for RAM and too fast for storage
+          \item Too much for storage
+        \end{itemize}
+      \item One-time access (flows)
+      \item Really small memory on some hardware
+    \end{itemize}
   \end{frame}
 
   \begin{frame}{Previous works}

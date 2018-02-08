@@ -7,7 +7,11 @@ BIBTEX:=bibtex >/dev/null
 PYTHON:=python3
 TEXGEN:=$(wildcard code/*.tex.py)
 
-all: ${PDF}
+all: predictor
+
+predictor: predictor_report.pdf predictor_slides.pdf
+
+paper: paper_slides.pdf
 
 predictor_report.pdf: predictor_report.tex
 	${TEXMK} ${@F:%.pdf=%.tex}
