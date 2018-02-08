@@ -75,7 +75,7 @@
 
 \begin{frame}{Algorithm and Implementation}
    \begin{itemize}
-    \item \textbf{Basic idea}: uses previous idea to calculate maximal length $L$ of mathing pattern suffix. Then takes the set of matches of length $\alpha \cdot L$ and returns the character following those sequences with higher frequency.
+    \item \textbf{Basic idea}: use previous idea to calculate maximal length $L$ of mathing pattern suffix. Then take the set of matches of length $\alpha \cdot L$ and return the character following those sequences with higher frequency.
   \end{itemize}
 
   \vspace{\fill}
@@ -84,7 +84,7 @@
   \begin{itemize}
     \item \textbf{Match pattern end indexes}: stored in a list of sets. Each set corresponds to one length
     \item \textbf{Scan last set in the list} to find longer matches until none is found
-    \item Uses \textbf{set with matches of length $\alpha \cdot L$} to determine which following character is the most frequent
+    \item Use \textbf{set with matches of length $\alpha \cdot L$} to determine which following character is the most frequent
   \end{itemize}
   \vspace{\fill}
 
@@ -98,6 +98,23 @@
 
 \tptsection{Variation proposal}
 
+\begin{frame}{Algorithm and Implementation}
+   \begin{itemize}
+    \item \textbf{Basic idea}: Precompute a substring tree. Then looking for suffix matches during the prediction is much faster.
+  \end{itemize}
+
+  \vspace{\fill}
+
+  How we coded it:
+  \begin{itemize}
+    \item \textbf{Define a parameter p} for the maximum length of substrings (hence maximum height of the tree)
+  \end{itemize}
+  \vspace{\fill}
+
+    Always better with an example...
+
+\end{frame}
+
 \begin{frame}{Reading substrings}\centering
   \input{code/learning.tex}
 \end{frame}
@@ -105,6 +122,23 @@
 \tptsection{Experimentation}
 
 \begin{frame}{Parameters influence}
+ \begin{table}
+    \centering
+    \begin{tabular}{c || c  c}
+      $\alpha$ & Lorem Ipsum & Bible \\\hline\hline
+      1.0 & 58.97\% & 65.67\% \\\hline
+      0.9 & 59.19\% & 65.30\% \\\hline
+      0.8 & 59.26\% & 65.52\% \\\hline
+      0.7 & 59.26\% & 65.30\% \\\hline
+      0.6 & 57.58\% & 61.13\% \\\hline
+      0.5 & 56.55\% & 64.10\% \\\hline
+      0.4 & 51.78\% & 61.61\% \\\hline
+      0.3 & 43.21\% & 57.21\% \\\hline
+      0.2 & 34.90\% & 53.12\% \\\hline
+      0.1 & 27.18\% & 44.82\%
+    \end{tabular}
+    %\caption{\label{alpha} Precision performance for different $\alpha$ values applied to Lorem Ipsum and an extract from the Bible}
+  \end{table}
 \end{frame}
 
 \begin{frame}{Distributed design}
