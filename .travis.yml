@@ -6,4 +6,25 @@ install:
 env:
   - PYTHONPATH=src
 script:
-  - python -m predictor 0.8 data/medium.txt
+  - echo "BIBLE TESTS FOR 1.0 0.8 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1"
+  - python -m predictor 1.0 data/large.txt
+  - python -m predictor 0.9 data/large.txt
+  - python -m predictor 0.8 data/large.txt
+  - python -m predictor 0.7 data/large.txt
+  - python -m predictor 0.6 data/large.txt
+  - python -m predictor 0.5 data/large.txt
+  - python -m predictor 0.4 data/large.txt
+  - python -m predictor 0.3 data/large.txt
+  - python -m predictor 0.2 data/large.txt
+  - python -m predictor 0.1 data/large.txt
+  - echo "LIPSUM TESTS FOR 1.0 0.8 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1"
+  - python -m predictor 1.0 data/lipsum.txt
+  - python -m predictor 0.9 data/lipsum.txt
+  - python -m predictor 0.8 data/lipsum.txt
+  - python -m predictor 0.7 data/lipsum.txt
+  - python -m predictor 0.6 data/lipsum.txt
+  - python -m predictor 0.5 data/lipsum.txt
+  - python -m predictor 0.4 data/lipsum.txt
+  - python -m predictor 0.3 data/lipsum.txt
+  - python -m predictor 0.2 data/lipsum.txt
+  - python -m predictor 0.1 data/lipsum.txt
