@@ -52,19 +52,85 @@
   \end{frame}
 
   \begin{frame}{Previous works}
+    \only<+->{\vspace*{.4cm}}
+
+    \begin{itemize}[<+-|alert@+>]
+      \item Probabilistic Counting\\
+        {\footnotesize\itshape%
+        closest to the LogLog paper in principle\\
+        important memory cost}
+      \item Linear Counting\\
+        {\footnotesize\itshape%
+        linear space complexity}
+      \item Multiresolution Bitmap\\
+        {\footnotesize\itshape%
+        20\% more accurate than probabilistic counting}
+      \item Adaptive Bitmap\\
+        {\footnotesize\itshape%
+        specific to flows in routers, very accurate}
+      \item Adaptive Sampling\\
+        {\footnotesize\itshape%
+        50\% less accurate than probabilistic counting}
+    \end{itemize}
+
   \end{frame}
 
 \tptsection{The LogLog algorithm}
 
   \begin{frame}{Vous avez dit LogLog~?}
+    \only<+->{\vspace*{.4cm}}
+
+    \begin{center}
+      \begin{description}[<+-|alert@+>]
+        \item[Probabilistic] Randomize data with hashing
+        \item[Storage] Store $m = 2^k$ integers $M_i$
+        \item[Compute] $h \gets \mathrm{hash}(word)$\\
+          $j \gets \mathrm{int}(h[0..k])$
+          $M_j \gets \max(M_j, \mathrm{rank}(h[k..]))$
+        \item[Summary] Estimate is $\alpha_mm2^{<M>}$\\
+          {\footnotesize\itshape%
+          $\alpha_m$ is given by formal analysis}
+      \end{description}
+    \end{center}
   \end{frame}
 
   \begin{frame}{Comparison}
+    \only<+->{\vspace*{.4cm}}
+
+    \begin{center}
+      \begin{tabular}{c|cc}
+        Algorithm & Standard deviation & Memory usage example\\\hline
+        Sampling & $1.20/\sqrt{m}$ & $10.8$ kB\\\hline
+        P. Counting & $0.78/\sqrt{m}$ & $6.0$ kB\\\hline
+        Bitmap & $4.4/\sqrt{m}$ & $4.8$ kB\\\hline
+        LogLog & $1.3/\sqrt{m}$ & $2.1$ kB\\\hline
+        Super-LogLog & $1.05/\sqrt{m}$ & $1.7$ kB
+      \end{tabular}
+    \end{center}
   \end{frame}
 
 \tptsection{Conclusion}
 
   \begin{frame}{LogLog in a nutshell}
+    \only<+->{\vspace*{.4cm}}
+
+    \begin{itemize}[<+-|alert@+>]
+      \item LogLog brings amazing memory complexity\\
+        {\footnotesize\itshape%
+        and correct accuracy}
+      \item Super-LogLog brings the best accuracy\\
+        {\footnotesize\itshape%
+        to non initiated, it's mainly magical, though}
+      \item Practical\\
+        {\footnotesize\itshape%
+        proven by the implementation presented by the authors}
+    \end{itemize}\bigskip
+
+    \uncover<+->{\alert<.>{%
+      Relevance seems difficult to establish from outside the field.\\
+      {\footnotesize\itshape%
+      Given memory values seem unsignificant.}
+    }}
   \end{frame}
 
 \end{document}
