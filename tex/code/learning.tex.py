@@ -35,7 +35,7 @@ green = { 'a': { 'b': { 'b': {} } } }
 blue = { 'a': { 'b': { 'a': {}, 'b': {}, ' ': {} } } }
 red = { 'a': { 'b': {} } }
 
-for i in range(len(s)):
+for i in range(len(s)+1):
     for j in range(1,min(i,m)+1):
         insert(tree,s[i-j:i])
 color(tree,blue,'bleu','2-')

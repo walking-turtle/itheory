@@ -10,11 +10,14 @@ ce = s[-pl]
 epe = set()
 tepe = { i+pl-1 for i in range(len(s)-pl) if s[i] is ce }
 
-print("\\only<{:d}->{{\\colorlet{{fboxcolor}}{{noir}}}}".format(3))
+print("\\only<{:d}->{{\\colorlet{{fboxcolor}}{{noir}}}}".format(4))
 
 print("\\uncover<2->{$\\alpha = 0.75$}\\bigskip\n\n")
 
-print("\\begin{tabular}{"+'c'*len(s)+"}")
+header=["\\def\\matchingset{none}"]
+tabular=list()
+tabular.append("\\begin{tabular}{"+'c'*len(s)+"}")
+tabular.append(' & '.join(map(lambda x: '{{\\footnotesize{{}}{:d}}}'.format(x),range(len(s)))) + '\\\\')
 
 def mapping(x):
     i,a = x[:]
@@ -35,13 +38,18 @@ while len(tepe):
     epe = tepe
     ce = s[-pl-1]
     tepe = { i+pl for i in range(len(s)-pl-1) if s[i] is ce } & epe
-    print('&'.join(map(mapping,enumerate(s))) + '\\\\')
+    if pl >= 3:
+        header.append('\\only<{w}>{{\\def\\matchingset{{\\{{{epe}\\}}}}}}'.format(w="1-2" if pl > 3 else "3-",epe=','.join(map(str,sorted(list(epe))))))
+    tabular.append('{line}'.format(line='&'.join(map(mapping,enumerate(s))) + '\\\\',epe=str(epe)))
     pl+=1
 
-print("\\end{tabular}\\pause")
+tabular.append("\\end{tabular}")
 
-print("\\bigskip\n\nMaximum length: $4$. Used length: $4\cdot\\alpha = 3$.\\pause")
+print('\n'.join(header))
+print('\n'.join(tabular))
 
-print("\\bigskip\n\nPrediction given by most frequent pattern: \\textbf{{{:}}}.".format('a'))
+print("\\uncover<2->{\\bigskip\n\nMaximum length: $4$. Used length: $4\cdot\\alpha = 3$.}")
 
-print("\\colorlet{fboxcolor}{white}")
+print("\\uncover<3->{\\bigskip\n\nSet~=~{\\matchingset}}")
+
+print("\\uncover<4->{{\\bigskip\n\nPrediction given by most frequent pattern: \\textbf{{{:}}}.}}".format('a'))

@@ -36,7 +36,6 @@ while len(tepe):
     epe = tepe
     ce = s[-pl-1]
     tepe = { i+pl for i in range(len(s)-pl-1) if s[i] is ce } & epe
-    # print('\\uncover<{pl:d}->{{\only<{pl:d}->{{\\gdef{{\\matchingset}}{{${epe}$}}}}{line}}}'.format(pl=pl,line='&'.join(map(mapping,enumerate(s))) + '\\\\',epe=str(epe)))
     header.append('\\only<{pl:d}->{{\\def\\matchingset{{\\{{{epe}\\}}}}}}'.format(pl=pl,epe=','.join(map(str,sorted(list(epe))))))
     tabular.append('\\uncover<{pl:d}->{{{line}}}'.format(pl=pl,line='&'.join(map(mapping,enumerate(s))) + '\\\\',epe=str(epe)))
     pl+=1
