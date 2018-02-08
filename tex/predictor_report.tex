@@ -194,6 +194,10 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 \section*{Lessons learned}
 \addcontentsline{toc}{section}{Lessons learned}
 
+In this work we implemented algorithms that aimed to predict text based on previous text that was given. First of all we implemented a basic idea of prediction given by Ehrenfeucht and Mycielski \cite{basic_algo}. We also implemented the universal predictor proposed by Jacquet et al. \cite{paper} which was based in the basic idea and that took as a parameter $\alpha$, a real value between $0$ and $1$. We ran the universal prediction on human text (the Bible) and on pseudorandom text (Lorem Ipsum) for several values of $\alpha$: the results indicate that for human text, the most adapted value for $\alpha$ is $1$, while for pseudorandom text, it is between $\alpha=0.7$ and $\alpha=0.9$.
+
+Finally, we proposed a variation algorithm for predicting text based on a precomputation learning algorithm: by constructing a substring tree for the input text, the calculation of a prediction inside this text is much faster. However, this low time complexity is balanced by the precomputation (that takes a long time) and by the extra memory space used to store the tree.
+
 \bibliographystyle{plain}
 \bibliography{references}
 
