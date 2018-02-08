@@ -12,7 +12,10 @@ tepe = { i+pl-1 for i in range(len(s)-pl) if s[i] is ce }
 
 print("\\only<{:d}->{{\\colorlet{{fboxcolor}}{{noir}}}}".format(5))
 
-print("\\begin{tabular}{"+'c'*len(s)+"}")
+header=["\\def\\matchingset{none}"]
+
+tabular=["\\begin{tabular}{"+'c'*len(s)+"}"]
+tabular.append(' & '.join(map(lambda x: '{{\\footnotesize{{}}{:d}}}'.format(x),range(len(s)))) + '\\\\')
 
 def mapping(x):
     i,a = x[:]
@@ -33,11 +36,18 @@ while len(tepe):
     epe = tepe
     ce = s[-pl-1]
     tepe = { i+pl for i in range(len(s)-pl-1) if s[i] is ce } & epe
-    print('&'.join(map(mapping,enumerate(s))) + '\\pause\\\\')
+    # print('\\uncover<{pl:d}->{{\only<{pl:d}->{{\\gdef{{\\matchingset}}{{${epe}$}}}}{line}}}'.format(pl=pl,line='&'.join(map(mapping,enumerate(s))) + '\\\\',epe=str(epe)))
+    header.append('\\only<{pl:d}->{{\\def\\matchingset{{\\{{{epe}\\}}}}}}'.format(pl=pl,epe=','.join(map(str,sorted(list(epe))))))
+    tabular.append('\\uncover<{pl:d}->{{{line}}}'.format(pl=pl,line='&'.join(map(mapping,enumerate(s))) + '\\\\',epe=str(epe)))
     pl+=1
 
-print("\\end{tabular}")
+tabular.append("\\end{tabular}")
 
-print("\\bigskip\n\nPrediction given by most recent pattern: \\textbf{{{:}}}.".format(s[max(epe)+1]))
+print('\n'.join(header))
+print('\n'.join(tabular))
+
+print("\\bigskip\n\nSet~=~{\\matchingset}")
+
+print("\\bigskip\n\n\\uncover<{pl:d}->{{Prediction given by most recent pattern: \\textbf{{{pred}}}.}}".format(pl=pl,pred=s[max(epe)+1]))
 
 print("\\colorlet{fboxcolor}{white}")
