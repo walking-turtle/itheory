@@ -120,6 +120,8 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
   
   \subsection{Learning algorithm}
 
+  The learning algorithm consists in taking a string as input and producing the substring patterns tree from it, by limiting the maximum length of the substrings. This maximum length also corresponds to the height of the tree. The pseudocode is depicted in algorithm \ref{learning} and the implementation of it is displayed in annex \ref{code_learning}.
+
   \begin{algorithm}
     \KwData{Texts to read \textit{input}, memory size \textit{cache}.}
     \KwResult{Substrings and number of occurrences.}
@@ -136,11 +138,11 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
   \subsection{Prediction algorithm}
 
+  The prediction algorithm based on the construction of a substring tree consists in following directly the suffix path in the tree for the text we want to predict. The pseudocode is depicted in algorithm \ref{predicting} and the implementation of it is displayed in annex \ref{code_predicting}.
+
   \begin{algorithm}
     \KwData{Substrings and multiplicity counts.}
     \KwResult{Predictions}
-
-
 
     \KwRet{\textit{substrings}} with multiplicity count\;
 
@@ -216,12 +218,12 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
   \clearpage
   \section{Learning and predicting}
 
-    \subsection{Learning algorithm}
+  \subsection{Learning algorithm}\label{code_learning}
 
       \inputminted[linenos]{python}{code/learning.py}
 
     \clearpage
-    \subsection{From substrings to predictions}
+    \subsection{From substrings to predictions}\label{code_predicting}
 
       \inputminted[linenos]{python}{code/predicting.py}
 
