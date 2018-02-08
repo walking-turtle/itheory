@@ -24,7 +24,7 @@
 }
 
 \author{%
-  Carolina De Senne Garcia\\%
+  Carolina de Senne Garcia\\%
   Clément Durand%
 }
 
@@ -149,19 +149,44 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
   \subsection{Comparison}
 
+
   % Performance: difficilement comparable car on change l'équilibre du compromis
   % précomputation/prédiction.
 
-  \section{Performance tryouts and issues}\label{tests}
+  \section{Results, Analysis and issues}\label{tests}
 
-  \subsection{Increasing the data sizes}
+  In this section we present theoretical results of the algorithms analysed and experimental results in terms of prediction precision for different values of the parameter $\alpha$ in the universal predictor. We also escribe the distributed method used to perform the predictions on parts of the Bible and on pseudorandom texts.
+
+  \subsection{Performance Analysis}
+
+  In terms of theoretical complexity, the implementation for the universal predictor proposed earlier has time complexity $O(n)$ for one prediction, hence $O(n^2)$ for the whole text (it takes, more precisely, $O(n^2/2)$). Its space complexity if $O(n)$, corresponding to the index set size.
+
+  The variation algorithm has time complexity of $O(p)$, being $p$ the parameter determining the maximal height of the substring tree. In our case, we used $p=10$, so we have a time complexity of $O(10)$, hence constant $O(1)$. This huge improvement compared to the universal predictor is due to a pre-calculation to build the substring tree that takes much longer than the prediction algorithm and has a considerable space complexity.
+
+  Concerning the universal predictor, we also wanted to study which values of $\alpha$ gave better prediction results. We display in Table \ref{alpha} the results of our tests.
+
+ \begin{table}
+    \centering
+    \begin{tabular}{c || c  c}
+      $\alpha$ & Lorem Ipsum & Bible \\\hline\hline
+      1.0 & 58.97\% & 65.67\% \\\hline
+      0.9 & 59.19\% & 65.30\% \\\hline
+      0.8 & 59.26\% & 65.52\% \\\hline
+      0.7 & 59.26\% & 65.30\% \\\hline
+      0.6 & 57.58\% & 61.13\% \\\hline
+      0.5 & 56.55\% & 64.10\% \\\hline
+      0.4 & 51.78\% & 61.61\% \\\hline
+      0.3 & 43.21\% & 57.21\% \\\hline
+      0.2 & 34.90\% & 53.12\% \\\hline
+      0.1 & 27.18\% & 44.82\%
+    \end{tabular}
+    \caption{\label{alpha} Precision performance for different $\alpha$ values applied to Lorem Ipsum and an extract from the Bible}
+  \end{table}
 
   \subsection{Distributing the algorithms}
 
 \section*{Lessons learned}
 \addcontentsline{toc}{section}{Lessons learned}
-
-  \lipsum[8-9]
 
 \bibliographystyle{plain}
 \bibliography{references}
@@ -197,7 +222,5 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
       \inputminted[linenos]{python}{code/predicting.py}
 
 \end{appendices}
-
-
 
 \end{document}
