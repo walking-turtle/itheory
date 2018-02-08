@@ -149,7 +149,7 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
   \subsection{Comparison}
 
-
+  Althought the learning algorithm has a lower time complexity than the universal predictor (see section \ref{tests}), it is difficult to compare both algorithms, since the first has a very long precomputation time. This precomputation time, associated with the use of a big memory (the substring tree) enables the prediction part of the algorithm to have a very good performance.
   % Performance: difficilement comparable car on change l'équilibre du compromis
   % précomputation/prédiction.
 
@@ -185,6 +185,10 @@ Finally, in section \ref{tests} we discuss performance tests for the algorithms 
 
   \subsection{Distributing the algorithms}
 
+  For the universal predictor algorithm we implemented a distributed version in order to enhance its time performance. The main idea is to use several machines and divide the text to be predicted into chuncks that are analysed by each machine. Each machine then runs the original prediction over its piece of text and returns the statistics to a central computing server. The central server gathers the results received in order to merge them and produce the final prediction ratio.
+
+  This idea was also applied to the learning algorithm, although it was not very interesting due to the merge time delays.
+  
 \section*{Lessons learned}
 \addcontentsline{toc}{section}{Lessons learned}
 
